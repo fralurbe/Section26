@@ -15,7 +15,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/',(req,res) => {
-   res.send('Cuenta creada!')
+   req.on('data', data => {
+      console.log(data.toString('utf8'));
+   });
+   res.send('Cuenta creada!');
 })
 
 app.listen(3000, () => {
