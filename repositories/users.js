@@ -17,6 +17,13 @@ class UsersRepository {
    async checkForFile(){
 
    }
+
+   async getAll(){
+
+   
+   }
 }
+
+
 
 const repo = new UsersRepository('Users.json');
