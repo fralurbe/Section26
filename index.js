@@ -18,12 +18,11 @@ app.get('/', (req, res) => {
    `);
 });
 
-app.post('/', bodyParser.urlencoded({extended : true}), (req,res) => {
+app.post('/', bodyParser.urlencoded({extended : true}), (req, res) => {
    const user =  {
       email: string,
       password : string
    }
-
    
    console.log(req.body);
    res.send('Cuenta creada!');

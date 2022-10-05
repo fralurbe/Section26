@@ -1,4 +1,5 @@
 const fs = require('fs');
+
 class UsersRepository {
    constructor(filename) {
       if(!filename) {
@@ -14,16 +15,34 @@ class UsersRepository {
       }
    }
 
-   async checkForFile(){
+   async create (attrs) {
+      const records = await this.getAll();
+      records.push(attrs);
+      await this.writeAll(records);
+   }
+
+   async writeAll(records) {
+      await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
+   }
+
+   async checkForFile () {
 
    }
 
    async getAll(){
-
-   
+      const contents = await fs.promises.readFile(this.filename, {
+         encoding: 'utf8'
+      });
+      console.log(contents);
+      const data = JSON.parse(contents)
+      return data;
    }
 }
 
+const test = async () => {
+   const repo = new UsersRepository('users.json');
+   await repo.create({email : 'test@test.com', password: 'password'});
+   const users = await repo.getAll();
+}
 
-
-const repo = new UsersRepository('Users.json');
+const repo = test();
