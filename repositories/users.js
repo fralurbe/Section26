@@ -26,11 +26,7 @@ class UsersRepository {
    async writeAll(records) {
       await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
    }
-
-   async checkForFile () {
-
-   }
-
+   
    async getAll(){
       const contents = await fs.promises.readFile(this.filename, {
          encoding: 'utf8'
@@ -38,6 +34,30 @@ class UsersRepository {
       console.log(contents);
       const data = JSON.parse(contents)
       return data;
+   }
+
+   async getOne (id) {
+      const records = await this.getAll();
+      return records.find(record => record.id ===id);
+   }
+
+   async delete(id) {
+      console.log("id ", id)
+      const records = await this.getAll();
+      const filteredRecords =  records.filter( record => record.id != id)
+      console.log("filteredRecords ", filteredRecords)
+      await this.writeAll(filteredRecords);
+   }
+
+   async update(id, attrs){
+      const records = await this.getAll();
+      const record = records.find(record => {record.id === id});
+
+      if(!record){
+         throw new Error(`Record with id ${id} not found`)
+      }
+      Object.assign(record, attrs);
+      await this.writeAll(records);
    }
 
    randomId () {      
@@ -48,7 +68,8 @@ class UsersRepository {
 const test = async () => {
    const repo = new UsersRepository('users.json');
    await repo.create({email : 'test@test.com', password: 'password'});
-   const users = await repo.getAll();
+   await repo.delete("5c923fa0");
+   //console.log(user);
 }
 
 const repo = test();
