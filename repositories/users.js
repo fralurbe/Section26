@@ -31,7 +31,7 @@ class UsersRepository {
       const contents = await fs.promises.readFile(this.filename, {
          encoding: 'utf8'
       });
-      console.log(contents);
+      //console.log(contents);
       const data = JSON.parse(contents)
       return data;
    }
@@ -49,10 +49,28 @@ class UsersRepository {
       await this.writeAll(filteredRecords);
    }
 
+   async getOneBy (filters) {
+      const records = await this.getAll();
+      for (let record of records) {
+         let found = true;      
+         for (let key in filters) {            
+            if (record[key] != filters[key]) {
+               found = false;
+            }
+         }
+         if (found) {
+            console.log(record);
+            return record;
+         }      
+      // return records.find(record => record.id === id);
+      }
+   }
+
    async update(id, attrs){
       const records = await this.getAll();
-      const record = records.find(record => {record.id === id});
-
+      console.log('records ', records);
+      const record = records.find(record => record.id === id);
+      console.log('record ', record);
       if(!record){
          throw new Error(`Record with id ${id} not found`)
       }
@@ -65,11 +83,29 @@ class UsersRepository {
    }
 }
 
+module.exports = new UsersRepository('./users.json');
+
 const test = async () => {
    const repo = new UsersRepository('users.json');
-   await repo.create({email : 'test@test.com', password: 'password'});
-   await repo.delete("5c923fa0");
-   //console.log(user);
-}
+   const user = await repo.getOneBy({id: '5af9c242'});
 
-const repo = test();
+   //await repo.create({email : 'test@test.com', password: 'password'});
+   // await repo.update('2199ea3esdlkjaslk', { password : "contenidoCampo" });
+   // console.log(user);
+}
+//const repo = test();
+
+/*
+   //Bad way
+   module.exports = UsersRepository;
+   //On Another file....
+   const UsersRepository = require('./UsersRepository');
+   const mirepo = new UsersRepository('users.json');
+
+   //Another way (better)
+   module.exports = new UsersRepository('./users.json');
+   //On Another file....
+   const repo = require('./users');
+   repo.getAll()
+   repo.getOne('g2j4h4');
+*/
