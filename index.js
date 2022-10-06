@@ -21,8 +21,12 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
    const {email, password, passwordConfirmation} = req.body;   
-   const existingUser = usersRepo.getOne({email: email});   
-   console.log(req.body);
+   const existingUser = usersRepo.getOneBy({email: email});
+   if (existingUser)
+      return res.send('Email in use');
+   if (password !== passwordConfirmation)
+      return res.send('Passwords don\'t match!');
+
    res.send('Cuenta creada!');
 });
 

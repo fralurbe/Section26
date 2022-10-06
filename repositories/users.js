@@ -50,20 +50,19 @@ class UsersRepository {
    }
 
    async getOneBy (filters) {
-      const records = await this.getAll();
-      for (let record of records) {
-         let found = true;      
+      const records = await this.getAll();      
+      for (let record of records) {         
+         let found = true;
          for (let key in filters) {            
-            if (record[key] != filters[key]) {
+            if (record[key] !== filters[key]) {
                found = false;
             }
          }
          if (found) {
-            console.log(record);
             return record;
-         }      
-      // return records.find(record => record.id === id);
-      }
+         }
+         else return undefined;
+      }      
    }
 
    async update(id, attrs){
