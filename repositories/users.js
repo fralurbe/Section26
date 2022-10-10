@@ -30,11 +30,20 @@ class UsersRepository {
                   password: `${hashed.toString('hex')}.${salt}`};
       const records = await this.getAll();
       records.push(record);
+      console.log('records.push(record);')
       await this.writeAll(records);
       return record;
    }
 
+   async comparePasswords(saved, supplied) {
+      const [hashed, salt] = saved.split('.');
+      const hashedSupplied = await scrypt(supplied, salt, 64);
+
+      return hashed === hashedSupplied.toString('hex');
+   }
+
    async writeAll(records) {
+      console.log('async writeAll',this.filename);
       await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
    }
    

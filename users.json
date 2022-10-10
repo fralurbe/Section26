@@ -28,5 +28,20 @@
     "email": "miemail@mail.com",
     "password": "be957e4967b0d46d9391da186d7323a4ce265aafe00b272d6727d4b4743409ad6399411e94f249e5ee72f9b6e155a15c05a70534277ed2db90eb44057bda2d96.875060bccde131a0",
     "id": "36f5bfea"
+  },
+  {
+    "email": "holamiemail@mail.com",
+    "password": "c71910f576e38b031d22373c18d3a65a9a455df25a1606f5dcf46402c4bb8ef4ec254bcb4a528ba1776cbe019db42be1c78f6513bed0b5a5cce9437fa6fe0880.89b0b529975a479c",
+    "id": "6d8e5264"
+  },
+  {
+    "email": "holamieWWmail@mail.com",
+    "password": "3f3f3b65c85993d2a3ce211a355f7f122addac06b40e3566342a280c69f676c5dff718cecce5771a6aa561c1eb44e235f27daf913330a7c0530538370c0df2c8.59958e9e68102937",
+    "id": "da536af3"
+  },
+  {
+    "email": "juan@sldkjf.com",
+    "password": "92cca273f4ad6bf7a3e2ab42f54c31936b78bfbf3713113c08ec615249a8cb7ce01852d61810743301e0decf1a03cf25f4bb1f7e0df4d372887d29b781440c4c.6f96e9e811b6889d",
+    "id": "3c199d24"
   }
 ]

@@ -77,11 +77,12 @@ app.post('/signin', async (req, res) => {
    if(!user) {
       return res.send('Email not found');
    }
-   if(user.password !== password) {
-      console.log('user.password, password', user.password, password );
-      return res.send('Invalid password');
+
+   const validPassword = await usersRepo.comparePasswords(user.password, password);   
+   if (!validPassword){
+      return res.send('invalid password');
    }
-   
+
    req.session.userId = user.id;
    res.send('You are signed in');
 });
