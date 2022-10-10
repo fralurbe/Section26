@@ -1,5 +1,6 @@
 const fs = require('fs');
 const crypto = require ('crypto');
+const util = require('util');
 
 class UsersRepository {
    constructor(filename) {
@@ -16,8 +17,14 @@ class UsersRepository {
       }
    }
 
-   async create (attrs) {
+   async create (attrs) {      
       attrs.id = this.randomId();
+      const salt = crypto.randomBytes(8).toString('hex');
+      //https://nodejs.org/dist/latest-v16.x/docs/api/crypto.html#cryptoscryptpassword-salt-keylen-options-callback
+      crypto.scrypt(attrs.password, salt, 64, (error , derivedKey) => {
+         const hashed = derivedKey.toString('hex');
+      })
+
       const records = await this.getAll();
       records.push(attrs);
       await this.writeAll(records);
@@ -51,19 +58,19 @@ class UsersRepository {
    }
 
    async getOneBy (filters) {
-      const records = await this.getAll();      
-      for (let record of records) {         
-         let found = true;
+      console.log('getOneBy filters', filters);
+      const records = await this.getAll();     
+      // console.log('getOneBy records', records);
+      for (let record of records) {                  
          for (let key in filters) {            
-            if (record[key] !== filters[key]) {
-               found = false;
+            console.log(record[key], filters[key]);
+            if (record[key] == filters[key]) {
+               console.log('Aqui esta', record);
+               return record;
             }
          }
-         if (found) {
-            return record;
-         }
-         else return undefined;
-      }      
+      }   
+      return undefined;
    }
 
    async update(id, attrs){
