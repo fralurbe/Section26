@@ -18,5 +18,15 @@
     "email": "hola@guau.com",
     "password": "1234",
     "id": "90336096"
+  },
+  {
+    "email": "test100@mail.com",
+    "password": "[object Promise].dad3b8affb7269ed",
+    "id": "101e229b"
+  },
+  {
+    "email": "miemail@mail.com",
+    "password": "be957e4967b0d46d9391da186d7323a4ce265aafe00b272d6727d4b4743409ad6399411e94f249e5ee72f9b6e155a15c05a70534277ed2db90eb44057bda2d96.875060bccde131a0",
+    "id": "36f5bfea"
   }
 ]

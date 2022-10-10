@@ -2,6 +2,8 @@ const fs = require('fs');
 const crypto = require ('crypto');
 const util = require('util');
 
+const scrypt = util.promisify(crypto.scrypt)
+
 class UsersRepository {
    constructor(filename) {
       if(!filename) {
@@ -20,15 +22,16 @@ class UsersRepository {
    async create (attrs) {      
       attrs.id = this.randomId();
       const salt = crypto.randomBytes(8).toString('hex');
+      
       //https://nodejs.org/dist/latest-v16.x/docs/api/crypto.html#cryptoscryptpassword-salt-keylen-options-callback
-      crypto.scrypt(attrs.password, salt, 64, (error , derivedKey) => {
-         const hashed = derivedKey.toString('hex');
-      })
-
+      const hashed = await scrypt(attrs.password, salt, 64);      
+      const record = {
+                  ...attrs,
+                  password: `${hashed.toString('hex')}.${salt}`};
       const records = await this.getAll();
-      records.push(attrs);
+      records.push(record);
       await this.writeAll(records);
-      return attrs.id;
+      return record;
    }
 
    async writeAll(records) {
