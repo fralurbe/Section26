@@ -2,7 +2,7 @@ module.exports = ({ content }) => {
    return `
       <!DOCTYPE html>
       <html>
-         <head>   
+         <head>  
          </head>
          <body>
             ${content}
