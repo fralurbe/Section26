@@ -19,26 +19,33 @@ router.post(
          .normalizeEmail()
          .isEmail()
          .withMessage('Must be a valid message')
-         .custom((email) => {
-            
+         .custom(async (email) => {
+            const existingUser = await usersRepo.getOneBy({ email });
+            if (existingUser) {
+               throw new Error('Email in use');
+            }
          }),
       check('password')
          .trim()
          .isLength({min:4, max:16}),
       check('passwordConfirmation')
       .trim()
-      .isLength({min:4, max:16}),
+      .isLength({min:4, max:16})
+      .withMessage('Passwords lenght must be between 4 and 16.')
+      .custom((passwordConfirmation, {req}) =>
+      {
+         if (passwordConfirmation !== req.body.password) {
+            throw new Error('Password confirmation does not match password');
+          }      
+          // Indicates the success of this synchronous custom validator
+          return true;
+      })
    ],
    async (req, res) => {      
       console.log('app.post /signup');
       const errors = validationResult(req);
       console.log(errors);
-      const { email, password, passwordConfirmation } = req.body;
-
-      const existingUser = await usersRepo.getOneBy({ email });
-      if (existingUser) {
-         return res.send('Email in use');
-      }
+      const { email, password, passwordConfirmation } = req.body;      
 
       if (password !== passwordConfirmation) {
          return res.send('Passwords must match');
